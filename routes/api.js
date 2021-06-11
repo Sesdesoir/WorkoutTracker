@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const {Workout} = require('../models/index.js');
 //still unsure what exactly is wrong with this one?
+//this IS working in terms of adding exercises, however
+//I expected to see the workout on the screen.
 router.get('/workouts' , async (req,res)=>{
     console.log('***route hit***');
    try{ 
@@ -14,17 +16,23 @@ router.get('/workouts' , async (req,res)=>{
    }
 });
 //adding an exercise to a specific day's exercises array
+//this runs when you click either complete OR add exercise...
+//I personally feel like complete should delete or something
 router.put('/workouts/:id' , async (req , res) => {
     try{
-        console.log('This is adding a workout???');
-        Workout.create(req.body).then(data => {
+        Workout.updateOne(
+            { _id: req.params.id }, 
+            { $push: { exercises: req.body } },
+            
+        ).then(data =>{
             res.json(data);
         })
     } catch (err){
         return console.error(err);
     }
 });
-//creating a day plan workout with an exercise
+//creating a day plan workout with an empty exercise array
+// This is working and runs on clicking new workout
 router.post('/workouts', async (req, res) =>{
     console.log('***Adding a workout***');
     console.log(req.body);
@@ -35,7 +43,7 @@ router.post('/workouts', async (req, res) =>{
         return console.error(err);
     }
 });
-
+//I assume this is working because the stats page is working.
 router.get('/workouts/range' , (req , res) => {
     try{
         Workout.aggregate([
