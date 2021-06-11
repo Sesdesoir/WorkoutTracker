@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Workout = require('../models');
+const {Workout} = require('../models/index.js');
 
 router.get('/workouts' , async (req,res)=>{
     console.log('***route hit***');
@@ -23,7 +23,9 @@ router.put('/workouts/:id' , async (req , res) => {
 });
 
 router.post('/workouts', async (req, res) =>{
-  try{  Workout.create(req.body).then(data => {
+    console.log('***Adding a workout***');
+    console.log(req.body);
+  try{  Workout.create(req).then(data => {
         res.json(data);
         })
     } catch (err) {
