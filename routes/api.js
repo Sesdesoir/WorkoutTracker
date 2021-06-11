@@ -34,7 +34,24 @@ router.post('/workouts', async (req, res) =>{
     } catch (err) {
         return console.error(err);
     }
-})
+});
+
+router.get('/workouts/range' , (req , res) => {
+    try{
+        Workout.aggregate([
+            {
+                $addFields: {
+                    totalDuration: {$sum : 'duration'},
+                    totalWeight: {$sum: 'weight'}
+                }
+            }
+        ]).then(data => {
+            res.json(data);
+        })
+    } catch (err) {
+        return console.log(err);
+    }
+});
 
 
 module.exports = router;
