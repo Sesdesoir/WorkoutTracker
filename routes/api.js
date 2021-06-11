@@ -9,7 +9,7 @@ router.get('/workouts' , async (req,res)=>{
        Workout.findOne().sort({day: -1}).then(data =>{
         console.log("***last workout data***");   
         console.log(JSON.stringify(data));
-         return JSON.stringify(data);
+         res.json.data;
        })
    } catch (err){
        return console.error(err);
